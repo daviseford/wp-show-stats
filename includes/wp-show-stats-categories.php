@@ -42,7 +42,6 @@ function wp_show_stats_categories() {
     <div class="newsEdge">
     
     <div class="today">
-    <!--<p>Recent Posts: </p> -->
         <?php
 			$today = getdate();
 			$idObj = get_category_by_slug('newsedge'); 
@@ -52,18 +51,11 @@ $query = new WP_Query( 'year=' . $today['year'] . '&monthnum=' . $today['mon'] .
 			if( $query->have_posts() ) {
   				echo '';
   				while ($query->have_posts()) : $query->the_post(); 
-  				$dailyCount++;
-  			?>
-        	<!--
-            <p>
-          		<?php //the_title(); ?>
-        	</p>
-            -->
-        <?php
-  endwhile;
-}
-wp_reset_query();  // Restore global post data stomped by the_post().
-?>
+  					$dailyCount++;
+  				endwhile;
+			}
+			wp_reset_query();  // Restore global post data stomped by the_post().
+			?>
 		<h3><strong>NewsEdge Posts Today: <?php echo $dailyCount ?></strong></h3>
       </div>
       
@@ -106,18 +98,11 @@ wp_reset_query();  // Restore global post data stomped by the_post().
       
       <div class="thisMonth">
         <?php
-			$args=array(
-  				'post_type' => 'post',
-  				'date_query' => array(
-					array(
-						'year' => date( 'Y' ),
-						'month' => date( 'M' ),
-						),
-					),
-			);
+			$month = date( 'm' );
+			$year = date( 'Y' );
 			$my_query = null;
 			$monthlyCount = 0;
-			$my_query = new WP_Query($args . 'post_status=publish,future&order=ASC&posts_per_page=-1&orderby=date&cat=' . $id);
+			$my_query = new WP_Query('post_type=post&year=' . $year . '&monthnum=' . $month . '&post_status=publish,future&order=ASC&posts_per_page=-1&orderby=date&cat=' . $id);
 			if( $my_query->have_posts() ) {
   				echo '';
   				while ($my_query->have_posts()) : $my_query->the_post(); 
