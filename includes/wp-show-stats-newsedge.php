@@ -1,103 +1,167 @@
 <?php
 
-function wp_show_stats_categories() {  
+function wp_show_stats_newsedge() {  
+	
+	$idObj = get_category_by_slug('newsedge');  //establish our custom newsedge search
+  	$id = $idObj->term_id;	//grab the cat_id from the slug. i prefer being able to read and understand this variable
+    
 ?>
 
 <div class="wrap">
-  <h2>WP Show Stats - NewsEdge Statistics</h2>
-  <div class="stat-charts-main">   
-    
+  <h2>WP Show Stats - Newsedge Statistics</h2>
+  <div class="stat-charts-main">        
     <div class="today">
-    <!--<p>Recent Posts: </p> -->
         <?php
-			$today = getdate();
-			$idObj = get_category_by_slug('newsedge'); 
-  			$id = $idObj->term_id;			
+			$args = null;
+			$query = null;
 			$dailyCount = 0;
-$query = new WP_Query( 'year=' . $today['year'] . '&monthnum=' . $today['mon'] . '&day=' . $today['mday'] . '&cat=' . $id );
+			
+			$today = getdate();					
+			
+			$args = array(
+				'post_type' => 'post',
+				'post_status' => 'publish',
+				'year' => $today['year'],
+				'monthnum' => $today['mon'],
+				'day' => $today['mday'],
+				'cat' => $id,	
+				'posts_per_page' => -1,		
+			); //end of args array	
+			
+			$query = new WP_Query( $args );
+			
 			if( $query->have_posts() ) {
   				echo '';
   				while ($query->have_posts()) : $query->the_post(); 
-  				$dailyCount++;
-  			?>
-        	<!--
-            <p>
-          		<?php //the_title(); ?>
-        	</p>
-            -->
-        <?php
-  endwhile;
-}
-wp_reset_query();  // Restore global post data stomped by the_post().
-?>
+  					$dailyCount++;
+  				endwhile;
+			}
+			wp_reset_query();  // Restore global post data stomped by the_post().
+		?>
 		<h3><strong>NewsEdge Posts Today: <?php echo $dailyCount ?></strong></h3>
       </div>
       
       <div class="yesterday">
         <?php
-			$yesterday = getdate( strtotime('-1 day', strtotime("12:00:00") ) );
+			$args = null;
+			$query = null;
 			$yesterdayCount = 0;
-$query = new WP_Query( 'year=' . $yesterday['year'] . '&monthnum=' . $yesterday['mon'] . '&day=' . $yesterday['mday'] . '&cat=' . $id );
+			
+			$yesterday = getdate( strtotime('-1 day', strtotime("12:00:00") ) ); //subtract one day from our current value.
+			
+			$args = array(
+				'post_type' => 'post',
+				'post_status' => 'publish',
+				'year' => $yesterday['year'],
+				'monthnum' => $yesterday['mon'],
+				'day' => $yesterday['mday'],
+				'cat' => $id,			
+			); //end of args array				
+			
+			$query = new WP_Query( $args );
+			
 			if( $query->have_posts() ) {
   				echo '';
   				while ($query->have_posts()) : $query->the_post(); 
-  				$yesterdayCount++;
-  			?>
-        <?php
-  endwhile;
-}
-wp_reset_query();  // Restore global post data stomped by the_post().
-?>
+  					$yesterdayCount++;
+  				endwhile;
+			}
+			wp_reset_query();  // Restore global post data stomped by the_post().
+		?>
 		<h3><strong>NewsEdge Posts Yesterday: <?php echo $yesterdayCount ?></strong></h3>
       </div>
     
         
     <div class="thisWeek">
-        <?php
-			$args=array(
-  				'post_type' => 'post',
-  				'year' => date( 'Y' ),
-				'week' => date( 'W' ),
-			);
-			$my_query = null;
+        <?php		
+			$args = null;
+			$query = null;	
 			$weeklyCount = 0;
-			$my_query = new WP_Query($args . 'post_status=publish,future&order=ASC&posts_per_page=-1&orderby=date&cat=' . $id);
-			if( $my_query->have_posts() ) {
+			
+			$args = array(
+				'post_type' => 'post',
+				'post_status' => 'publish',
+				'date_query' => array(
+					array(
+						'after'     => '1 week ago',
+					),
+				),
+				'cat' => $id,	
+				'posts_per_page' => -1,		
+			); //end of args array			
+			
+			$query = new WP_Query( $args );
+			
+			if( $query->have_posts() ) {
   				echo '';
-  				while ($my_query->have_posts()) : $my_query->the_post(); 
+  				while ($query->have_posts()) : $query->the_post(); 
   				$weeklyCount++;
-  endwhile;
-}
-wp_reset_query();  // Restore global post data stomped by the_post().
-?>
+ 				 endwhile;
+			}
+			wp_reset_query();  // Restore global post data stomped by the_post().
+		?>
 		<h3><strong>NewsEdge Posts This Week: <?php echo $weeklyCount ?></strong></h3>
-      </div>
+      </div>         
+      
       
       <div class="thisMonth">
         <?php
-			$args=array(
-  				'post_type' => 'post',
-  				'date_query' => array(
-					array(
-						'year' => date( 'Y' ),
-						'month' => date( 'M' ),
-						),
-					),
-			);
-			$my_query = null;
+			$args = null;
+			$query = null;	
 			$monthlyCount = 0;
-			$my_query = new WP_Query($args . 'post_status=publish,future&order=ASC&posts_per_page=-1&orderby=date&cat=' . $id);
-			if( $my_query->have_posts() ) {
+			
+			$args = array(
+				'post_type' => 'post',
+				'post_status' => 'publish',
+				'date_query' => array(
+					array(
+						'after'     => '1 month ago',
+					),
+				),
+				'cat' => $id,	
+				'posts_per_page' => -1,		
+			); //end of args array
+			
+			$query = new WP_Query( $args );
+			
+			if( $query->have_posts() ) {
   				echo '';
-  				while ($my_query->have_posts()) : $my_query->the_post(); 
-  				$monthlyCount++;
-  endwhile;
-}
-wp_reset_query();  // Restore global post data stomped by the_post().
-?>
+  				while ($query->have_posts()) : $query->the_post(); 
+  					$monthlyCount++;
+  				endwhile;
+			}
+			wp_reset_query();  // Restore global post data stomped by the_post().
+		?>
 		<h3><strong>NewsEdge Posts This Month: <?php echo $monthlyCount ?></strong></h3>
       </div>      
       
+      
+      <div class="total">
+        <?php			
+			$query = null;
+			$args = null;
+			$totalCount = 0;
+			
+			$args = array(
+				'post_type' => 'post',
+				'post_status' => 'publish',				
+				'cat' => $id,	
+				'posts_per_page' => -1,		
+			); //end of args array
+			
+			$query = new WP_Query( $args );
+			
+			if( $query->have_posts() ) {
+  				echo '';
+  				while ($query->have_posts()) : $query->the_post(); 
+  					$totalCount++;
+  				endwhile;
+			}
+			wp_reset_query();  // Restore global post data stomped by the_post().
+		?>
+		<h3><strong>NewsEdge Posts - Total: <?php echo $totalCount ?></strong></h3>
+        <!-- TODO: Add a selectmenu here so I can choose different categories. -->
+      </div>  
   </div>
 </div>
 <?php } ?>
