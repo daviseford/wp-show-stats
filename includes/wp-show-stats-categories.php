@@ -125,6 +125,7 @@ function wp_show_stats_categories() {
 			); //end of args array			
 			
 			$query = new WP_Query( $args );
+			
 			if( $query->have_posts() ) {
   				echo '';
   				while ($query->have_posts()) : $query->the_post(); 
@@ -156,6 +157,7 @@ function wp_show_stats_categories() {
 			); //end of args array
 			
 			$query = new WP_Query( $args );
+			
 			if( $query->have_posts() ) {
   				echo '';
   				while ($query->have_posts()) : $query->the_post(); 
@@ -182,7 +184,7 @@ function wp_show_stats_categories() {
 			); //end of args array
 			
 			$query = new WP_Query( $args );
-			//$query = new WP_Query('post_type=post&post_status=publish,future&order=ASC&posts_per_page=-1&orderby=date&cat=' . $id);
+			
 			if( $query->have_posts() ) {
   				echo '';
   				while ($query->have_posts()) : $query->the_post(); 
@@ -192,6 +194,7 @@ function wp_show_stats_categories() {
 			wp_reset_query();  // Restore global post data stomped by the_post().
 		?>
 		<h3><strong>NewsEdge Posts - Total: <?php echo $totalCount ?></strong></h3>
+        <!-- TODO: Add a selectmenu here so I can choose different categories. -->
       </div>   
       
       
