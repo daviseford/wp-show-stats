@@ -33,7 +33,7 @@ function show_stats_add_menu_items() {
     add_submenu_page('wp_show_stats', 'Tags Stats', 'Tags Stats', 'manage_options', 'wp_show_stats_tags', 'wp_show_stats_tags');
     add_submenu_page('wp_show_stats', 'Custom Post Types Stats', 'Custom Post Types Stats', 'manage_options', 'wp_show_stats_custom_post_types', 'wp_show_stats_custom_post_types');
 	add_submenu_page('wp_show_stats', 'Page Stats', 'Page Stats', 'manage_options', 'wp_show_stats_pages', 'wp_show_stats_pages');
-	add_submenu_page('wp_show_stats', 'Newsedge Stats', 'Newsedge Stats', 'manage_options', 'wp_show_stats_newsedge', 'wp_show_stats_newsedge');
+	add_submenu_page('wp_show_stats', 'NewsEdge Stats', 'NewsEdge Stats', 'manage_options', 'wp_show_stats_newsedge', 'wp_show_stats_newsedge');
 }
 add_action('admin_menu', 'show_stats_add_menu_items');
 
