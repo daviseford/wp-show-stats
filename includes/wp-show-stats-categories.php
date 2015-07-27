@@ -42,7 +42,7 @@ function wp_show_stats_categories() {
     <div class="newsEdge">
     
     <div class="today">
-    <p>Recent Posts: </p>
+    <!--<p>Recent Posts: </p> -->
         <?php
 			$today = getdate();
 			$idObj = get_category_by_slug('newsedge'); 
@@ -54,9 +54,11 @@ $query = new WP_Query( 'year=' . $today['year'] . '&monthnum=' . $today['mon'] .
   				while ($query->have_posts()) : $query->the_post(); 
   				$dailyCount++;
   			?>
-        	<p>
-          		<?php the_title(); ?>
+        	<!--
+            <p>
+          		<?php //the_title(); ?>
         	</p>
+            -->
         <?php
   endwhile;
 }
@@ -86,14 +88,11 @@ wp_reset_query();  // Restore global post data stomped by the_post().
         
     <div class="thisWeek">
         <?php
-			$args=array(
-  				'post_type' => 'post',
-  				'year' => date( 'Y' ),
-				'week' => date( 'W' ),
-			);
+			$week = date( 'W' );
+			$year = date( 'Y' );
 			$my_query = null;
 			$weeklyCount = 0;
-			$my_query = new WP_Query($args . 'post_status=publish,future&order=ASC&posts_per_page=-1&orderby=date&cat=' . $id);
+			$my_query = new WP_Query('post_type=post&year=' . $year . '&w=' . $week . '&post_status=publish,future&order=ASC&posts_per_page=-1&orderby=date&cat=' . $id);
 			if( $my_query->have_posts() ) {
   				echo '';
   				while ($my_query->have_posts()) : $my_query->the_post(); 
@@ -130,10 +129,28 @@ wp_reset_query();  // Restore global post data stomped by the_post().
 		<h3><strong>NewsEdge Posts This Month: <?php echo $monthlyCount ?></strong></h3>
       </div>      
       
+      
+      <div class="total">
+        <?php
+			
+			$my_query = null;
+			$totalCount = 0;
+			$my_query = new WP_Query('post_type=post&post_status=publish,future&order=ASC&posts_per_page=-1&orderby=date&cat=' . $id);
+			if( $my_query->have_posts() ) {
+  				echo '';
+  				while ($my_query->have_posts()) : $my_query->the_post(); 
+  				$totalCount++;
+  endwhile;
+}
+wp_reset_query();  // Restore global post data stomped by the_post().
+?>
+		<h3><strong>NewsEdge Posts - Total: <?php echo $totalCount ?></strong></h3>
+      </div>   
+      
+      
     </div>
   </div>
 </div>
-<?php include_once('wp-show-stats-sidebar.php'); ?>
 <script type="text/javascript">
             google.load("visualization", "1", {packages: ["corechart"]});
             google.setOnLoadCallback(drawChart);
