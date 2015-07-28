@@ -94,8 +94,6 @@ function wp_show_stats_pages() {
     </div>
 
 
-    <?php include_once('wp-show-stats-sidebar.php'); ?>
-
     <script type="text/javascript">
             google.load("visualization", "1", {packages: ["corechart"]});
             google.setOnLoadCallback(drawChart);

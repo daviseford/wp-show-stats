@@ -7,9 +7,11 @@ function wp_show_stats_newsedge() {
     
 ?>
 
+
 <div class="wrap">
   <h2>WP Show Stats - Newsedge Statistics</h2>
-  <div class="stat-charts-main">        
+  <div class="stat-charts-main">      
+    
     <div class="today">
         <?php
 			$args = null;

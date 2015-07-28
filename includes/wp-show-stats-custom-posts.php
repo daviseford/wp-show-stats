@@ -49,7 +49,6 @@ function wp_show_stats_custom_post_types() {
         </div>
     </div>
 
-    <?php include_once('wp-show-stats-sidebar.php'); ?>
 
     <script type="text/javascript">
         

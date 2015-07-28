@@ -80,7 +80,6 @@ function wp_show_stats_home_page() {
             </div>
         </div>
         
-        <?php include_once('wp-show-stats-sidebar.php'); ?>
         
         
         <script>
